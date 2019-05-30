@@ -35,7 +35,7 @@ struct Sensors::Chip::Feature
   end
 
   def each_subfeature_with_index
-    index = pointerof(0)
+    index = Pointer(LibC::Int).malloc size: 1, value: 0
     while subfeat = LibSensors.all_subfeatures @chip, self, index
       yield index.value, Subfeature.new subfeat, under: self
     end

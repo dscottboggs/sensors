@@ -1,5 +1,5 @@
 class Sensors::Chip
-  @name : LibSensors::ChipName
+  @name : Pointer(LibSensors::ChipName)
 
   def initialize(@name)
   end
@@ -16,16 +16,19 @@ class Sensors::Chip
     new name: result
   end
 
+  getter features : Features { Features.all on: self }
+
   def to_unsafe
     @name
   end
 
   def finalize
-    LibSensors.free_chip_name self
+    LibSensors.free_chip_name @name.value
+    LibC.free self
   end
 
   def each_feature_with_index
-    index = pointerof(0)
+    index = Pointer(LibC::Int).malloc size: 1, value: 0
     while feature = LibSensors.features self, index
       yield index.value, Feature.new feature, self
     end
@@ -39,8 +42,8 @@ class Sensors::Chip
 
   {% for cstr in [:prefix, :path] %}
   def {{cstr.id}}
-    String.new @name.{{cstr.id}}
+    String.new @name.value.{{cstr.id}}
   end
   {% end %}
-  delegate :bus, :addr, to: @name
+  delegate :bus, :addr, to: @name.value
 end

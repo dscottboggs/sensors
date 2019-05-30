@@ -1,4 +1,4 @@
-@[Link("libsensors")]
+@[Link("sensors")]
 lib LibSensors
   type Feature = Void*
 
@@ -16,7 +16,7 @@ lib LibSensors
     MAX_OTHER
     BEEP_ENABLE = 0x18
     MAX
-    UNKNOWN     = INT_MAX
+    UNKNOWN     = LibC::Int::MAX
   end
   enum SubfeatureType
     IN_INPUT               = FeatureType::IN << 8
@@ -105,7 +105,7 @@ lib LibSensors
     INTRUSION_ALARM        = FeatureType::INTRUSION << 8
     INTRUSION_BEEP
     BEEP_ENABLE            = FeatureType::BEEP_ENABLE << 8
-    UNKNOWN                = INT_MAX
+    UNKNOWN                = LibC::Int::MAX
   end
 
   struct BusID
@@ -139,7 +139,7 @@ lib LibSensors
 
   # If FILE is NULL, the default configuration files are used (see the FILES
   # section in libsensors(3)). Most applications will want to do that.
-  fun init = sensors_init(LibC::FILE*) : LibC::Int
+  fun init = sensors_init(LibC::Int*) : LibC::Int
   # cleans everything up: you can't access anything after this, until the
   # next LibSensors.init call!
   fun cleanup = sensors_cleanup : Void
