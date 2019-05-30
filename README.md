@@ -1,6 +1,6 @@
 # sensors
 
-TODO: Write a description here
+Iterate and access hardware sensors from your Crystal applications.
 
 ## Installation
 
@@ -9,7 +9,7 @@ TODO: Write a description here
    ```yaml
    dependencies:
      sensors:
-       github: your-github-user/sensors
+       github: dscottboggs/sensors
    ```
 
 2. Run `shards install`
@@ -18,17 +18,19 @@ TODO: Write a description here
 
 ```crystal
 require "sensors"
+
+Sensors::Chips.each do |chip|
+  if chip.prefix == "coretemp"
+    chip.each_feature do |feature|
+      puts "#{feature.label}: #{feature.subfeatures.first.value}"
+    end
+  end
+end
 ```
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/sensors/fork>)
+1. Fork it (<https://github.com/dscottboggs/sensors/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -36,4 +38,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [D. Scott Boggs](https://github.com/your-github-user) - creator and maintainer
+- [D. Scott Boggs](https://github.com/dscottboggs) - creator and maintainer
